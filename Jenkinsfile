@@ -18,11 +18,22 @@ pipeline {
                 sh './gradlew test'
             }
         }
+
+        stage('Coverage') {
+            steps {
+                sh './gradlew jacocoTestReport'
+            }
+        }
     }
 
     post {
         always {
             junit 'app/build/test-results/test/*.xml'
+
+            archiveArtifacts(
+                artifacts: 'app/build/reports/jacoco/test/**',
+                allowEmptyArchive: true
+            )
         }
     }
 }
