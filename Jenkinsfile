@@ -22,6 +22,14 @@ pipeline {
         stage('Coverage') {
             steps {
                 sh './gradlew jacocoTestReport'
+
+                recordCoverage(
+                    tools: [[
+                        parser: 'JACOCO',
+                        pattern: 'app/build/reports/jacoco/test/jacocoTestReport.xml'
+                    ]],
+                    sourceCodeRetention: 'EVERY_BUILD'
+                )
             }
         }
     }
